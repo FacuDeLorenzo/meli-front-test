@@ -5,9 +5,9 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
-import Products from "./Products";
-import Product from "./Product";
-import Search from "./Search";
+import Products from "pages/Products";
+import Product from "pages/Product";
+import Search from "pages/Search";
 
 const App = () => {
   const routes = [

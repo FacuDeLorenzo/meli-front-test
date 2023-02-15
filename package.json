@@ -8,11 +8,11 @@
     ]
   },
   "scripts": {
-    "dev:front-api": "concurrently \"npm workspace @meli-front-test/front start\" \"npm workspace @meli-front-test/api start:dev\"",
-    "dev:front": "npm workspace @meli-front-test/front start",
-    "build:front": "npm workspace @meli-front-test/front build",
-    "dev:api": "npm workspace @meli-front-test/api start:dev",
-    "build:api": "npm workspace @meli-front-test/api build",
-    "test:api": "npm workspace @meli-front-test/api test"
+    "dev:front-api": "concurrently \"npm --workspace=@meli-front-test/front run start\" \"npm --workspace=@meli-front-test/api run start:dev\"",
+    "dev:front": "npm --workspace=@meli-front-test/front run start",
+    "build:front": "npm --workspace=@meli-front-test/front run build",
+    "dev:api": "npm --workspace=@meli-front-test/api run start:dev",
+    "build:api": "npm --workspace=@meli-front-test/api run build",
+    "test:api": "npm --workspace=@meli-front-test/api run test"
   }
 }
