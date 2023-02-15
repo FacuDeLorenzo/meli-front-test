@@ -53,6 +53,11 @@ export class ItemsService {
         product.free_shipping = dirtyProduct.shipping.free_shipping;
       else
         throw new Error(`Key shipping.free_shipping not found on dirtyProduct `);
+      //Decimals not recieved from API
+      if (dirtyProduct?.currency_id !== undefined && dirtyProduct?.price)
+        product.price = {currency: dirtyProduct?.currency_id, amount: dirtyProduct?.price, decimals: 0};
+      else
+        throw new Error(`Key shipping.free_shipping not found on dirtyProduct `);
 
       return product;
     }

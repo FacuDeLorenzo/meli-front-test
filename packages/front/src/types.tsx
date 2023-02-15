@@ -10,3 +10,26 @@ export interface Product {
   condition: string;
   free_shipping: Boolean;
 }
+
+export interface ListProduct {
+  id: string;
+  title: string;
+  price: {
+    currency: string;
+    amount: number;
+    decimals: number;
+  };
+  condition: string;
+  free_shipping: boolean;
+  thumbnail: string;
+}
+
+
+export interface Products {
+  author: {
+    name: string
+    lastname: string
+  };
+  categories: string[];
+  items: ListProduct[]
+}
