@@ -32,6 +32,9 @@ export class ItemsService {
 
     return result;
   }
+
+  //Decided to go for a fast mapping with class initialized keys
+  //Could have used object-mapper package to achieve it in a better way.
   getCleanBaseProduct(dirtyProduct: any): BaseProduct {
     try {
       let product = new BaseProduct();
@@ -57,6 +60,7 @@ export class ItemsService {
       return null
     }
   }
+
   getCleanProduct(dirtyProduct: any): Product {
     try {
       let product = new Product();
