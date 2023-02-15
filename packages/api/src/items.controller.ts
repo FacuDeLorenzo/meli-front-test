@@ -1,19 +1,24 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ItemsService } from './items.service';
+import { Product, ProductsInput } from './items.types';
 
 @Controller('api/items')
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) { }
 
   @Get()
-  products(): string {
-    return this.itemsService.getProducts();
+  async products(@Query() { q: query }: ProductsInput): Promise<any> {
+    console.log("query: ", query);
+    let response = await this.itemsService.getProducts(query);
+    return response;
   }
   @Get(':id')
-  product(@Param() params): string {
-    if (params?.id) {
+  async product(@Param('id') id: string): Promise<Product> {
+    if (!id) {
       return null;
     }
-    return this.itemsService.getProduct(params?.id);
+    let response = await this.itemsService.getProduct(id);
+
+    return response;
   }
 }

@@ -2,7 +2,7 @@
 
 Monorepo created to resolve Mercado Libre's frontend test.
 
-The API was built using Nest, which can use express and has typescript & jest built in.
+The Node API was built on top of Node v18, using Nest, which can use express and has typescript & jest built in.
 
 The Front was built using a combination of Create-React-App for an out of the box running react app.
 It uses [react-router](https://reactrouter.com/en/main) for simple and efficient routing.
