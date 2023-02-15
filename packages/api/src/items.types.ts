@@ -1,9 +1,11 @@
 import { IsString } from 'class-validator';
 
+//Used an input class to be able to validate the request properties types.
 export class ProductsInput {
   @IsString()
   q: string;
 }
+//Used a constructor in order to create a fast mapper on the service
 export class BaseProduct {
   constructor() {
     this.id = "";
@@ -28,7 +30,6 @@ export class BaseProduct {
   thumbnail: string;
 }
 
-
 export class Product extends BaseProduct {
   constructor() {
     super();
@@ -38,7 +39,6 @@ export class Product extends BaseProduct {
 }
 
 export class Products {
-
   author: {
     name: string
     lastname: string

@@ -60,8 +60,6 @@ export class ItemsService {
   getCleanProduct(dirtyProduct: any): Product {
     try {
       let product = new Product();
-      console.log("product: ", product);
-      console.log("keys: ", Object.keys(product));
       Object.keys(product).forEach(
         (key) => {
           if (dirtyProduct[key]) {
@@ -86,7 +84,7 @@ export class ItemsService {
       return product;
     }
     catch {
-      return null
+      return undefined
     }
   }
 }

@@ -8,8 +8,8 @@ export class ItemsController {
 
   @Get()
   async products(@Query() { q: query }: ProductsInput): Promise<any> {
-    console.log("query: ", query);
     let response = await this.itemsService.getProducts(query);
+
     return response;
   }
   @Get(':id')
@@ -17,6 +17,7 @@ export class ItemsController {
     if (!id) {
       return null;
     }
+
     let response = await this.itemsService.getProduct(id);
 
     return response;
