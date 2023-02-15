@@ -14,7 +14,7 @@ const ProductListItem = ({ product }: IProductListItem) => {
     <Link to={`/items/${product.id}`} style={{ textDecoration: "none" }}>
       <Card>
         <PicBox>
-          <img src={product.thumbnail} alt="product-picture" />
+          <img src={product.thumbnail} alt="product" />
         </PicBox>
         <Description>
           <Typography variant="h6" sx={{ marginBottom: "0.5rem" }}>
@@ -38,7 +38,7 @@ const Card = styled(MuiCard)({
   flexDirection: "row",
   padding: "1rem",
   gap: "1rem",
-  marginBottom:"1px"
+  marginBottom: "1px",
 });
 const Description = styled("div")({
   display: "flex",

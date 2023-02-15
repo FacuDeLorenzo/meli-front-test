@@ -55,9 +55,9 @@ export class ItemsService {
         throw new Error(`Key shipping.free_shipping not found on dirtyProduct `);
       //Decimals not recieved from API
       if (dirtyProduct?.currency_id !== undefined && dirtyProduct?.price)
-        product.price = {currency: dirtyProduct?.currency_id, amount: dirtyProduct?.price, decimals: 0};
+        product.price = { currency: dirtyProduct?.currency_id, amount: dirtyProduct?.price, decimals: 0 };
       else
-        throw new Error(`Key shipping.free_shipping not found on dirtyProduct `);
+        throw new Error(`Keys for price not found on dirtyProduct `);
 
       return product;
     }
@@ -89,6 +89,12 @@ export class ItemsService {
         product.picture = dirtyProduct?.pictures[0].url;
       else
         throw new Error(`Key pictures[0].url not found on dirtyProduct `);
+
+      if (dirtyProduct?.currency_id !== undefined && dirtyProduct?.price)
+        product.price = { currency: dirtyProduct?.currency_id, amount: dirtyProduct?.price, decimals: 0 };
+      else
+        throw new Error(`Keys for price not found on dirtyProduct `);
+
 
       return product;
     }

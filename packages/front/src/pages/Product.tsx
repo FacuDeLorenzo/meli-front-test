@@ -2,34 +2,77 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { useQuery } from "@tanstack/react-query";
 import Searcher from "components/styled/Searcher";
+import { NumericFormat } from "react-number-format";
 import { useParams } from "react-router-dom";
+import jsonFetch from "utils/jsonFetch";
+import { Product as ProductResponse } from "types";
+import Body from "components/styled/Body";
+import ContentSection from "components/styled/ContentSection";
+import Breadcrumbs from "components/Breadcrumbs";
 
 const Product = () => {
   const { id } = useParams();
-
+  const { data: product } = useQuery<ProductResponse>({
+    enabled: !!id,
+    queryFn: () => getProduct(id!),
+  });
+  const breadcrumbChilds = [
+    {
+      to: "#",
+      label: "Product",
+    },
+  ];
   return (
-    <>
+    <Body>
       <Searcher />
-      <WhitePaper>
-        <LeftColumn>
-          <PicBox sx={{ height: 500 }}>
-            <img src="test.jpg" />
-          </PicBox>
-          <Description>
-            <Typography variant="h3">Descripcion del producto</Typography>
-            <Typography variant="h4">Descripcion</Typography>
-          </Description>
-        </LeftColumn>
-        <RightColumn>
-            <Typography variant ="h4" sx={{marginBottom:"1rem"}}>Titulo</Typography>
-            <Typography variant ="h3" sx={{marginBottom:"2rem"}}>$999.999<Sup>99</Sup></Typography>
+      <ContentSection>
+        <Breadcrumbs childs={breadcrumbChilds} />
+        <WhitePaper>
+          <LeftColumn>
+            <PicBox>
+              <img
+                src={product?.picture}
+                alt="product"
+                style={{
+                  maxWidth: 400,
+                }}
+              />
+            </PicBox>
+            <Description>
+              <Typography variant="h4" sx={{ marginBottom: "2rem" }}>
+                Descripcion del producto
+              </Typography>
+              <Typography variant="h6">{product?.description}</Typography>
+            </Description>
+          </LeftColumn>
+          <RightColumn>
+            <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
+              {product?.title}
+            </Typography>
+            <Typography variant="h4" sx={{ marginBottom: "2rem" }}>
+              $
+              <NumericFormat
+                value={product?.price?.amount}
+                displayType={"text"}
+                thousandSeparator="."
+                decimalSeparator=","
+              />
+              <Sup>{String(product?.price.decimals).padStart(2, "0")}</Sup>
+            </Typography>
             <Button variant="contained">Comprar</Button>
-        </RightColumn>
-      </WhitePaper>
-      <div>Product {id}</div>
-    </>
+          </RightColumn>
+        </WhitePaper>
+      </ContentSection>
+    </Body>
   );
+};
+
+const getProduct = (id: string) => {
+  return jsonFetch({
+    endpoint: `http://localhost:3001/api/items/${id}`,
+  });
 };
 
 const Description = styled("div")({
@@ -38,10 +81,11 @@ const Description = styled("div")({
   gap: 4,
 });
 const PicBox = styled("div")({
-  maxWidth: 400,
+  justifyContent: "center",
+  display: "flex",
 });
 const LeftColumn = styled("div")({
-  flex: 7,
+  flex: 2,
 });
 
 const RightColumn = styled("div")({
@@ -57,7 +101,7 @@ const WhitePaper = styled(Paper)({
   padding: "1rem",
 });
 
-const Sup = styled('sup')({
-  fontSize: "24px"
-})
+const Sup = styled("sup")({
+  fontSize: "20px",
+});
 export default Product;

@@ -9,6 +9,7 @@ export interface Product {
   picture: string;
   condition: string;
   free_shipping: Boolean;
+  description: string;
 }
 
 export interface ListProduct {
@@ -24,12 +25,11 @@ export interface ListProduct {
   thumbnail: string;
 }
 
-
 export interface Products {
   author: {
-    name: string
-    lastname: string
+    name: string;
+    lastname: string;
   };
   categories: string[];
-  items: ListProduct[]
+  items: ListProduct[];
 }
