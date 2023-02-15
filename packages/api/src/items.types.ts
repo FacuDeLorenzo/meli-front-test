@@ -4,16 +4,46 @@ export class ProductsInput {
   @IsString()
   q: string;
 }
-
-export class Product {
-  id: String;
-  title: String;
+export class BaseProduct {
+  constructor() {
+    this.id = "";
+    this.title = "";
+    this.price = {
+      currency: "",
+      amount: 0,
+      decimals: 0,
+    };
+    this.condition = "";
+    this.thumbnail = "";
+  }
+  id: string;
+  title: string;
   price: {
-    currency: String;
-    amount: Number;
-    decimals: Number;
+    currency: string;
+    amount: number;
+    decimals: number;
   };
-  picture: String;
-  condition: String;
-  free_shipping: Boolean;
+  condition: string;
+  free_shipping: boolean;
+  thumbnail: string;
 }
+
+
+export class Product extends BaseProduct {
+  constructor() {
+    super();
+  }
+  picture: string;
+  description: string;
+}
+
+export class Products {
+
+  author: {
+    name: string
+    lastname: string
+  };
+  categories: string[];
+  items: Product[]
+}
+

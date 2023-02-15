@@ -1,12 +1,12 @@
 export interface Product {
-  id: String;
-  title: String;
+  id: string;
+  title: string;
   price: {
-    currency: String;
-    amount: Number;
-    decimals: Number;
+    currency: string;
+    amount: number;
+    decimals: number;
   };
-  picture: String;
-  condition: String;
+  picture: string;
+  condition: string;
   free_shipping: Boolean;
 }

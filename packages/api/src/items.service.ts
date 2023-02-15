@@ -1,18 +1,92 @@
-import { Injectable } from '@nestjs/common';
-import { Product } from './items.types';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { BaseProduct, Product, Products } from './items.types';
 
 @Injectable()
 export class ItemsService {
-  async getProducts(query: string): Promise<any> {
-    let result = await fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${query}`).then((response) => { return response.json(); });
-    return result;
+  async getProducts(query: string): Promise<Products> {
+    let queryResult = await fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${query}&limit=4`)
+      .then((response) => { return response.json(); })
+      .then((responseJson) => {
+        return {
+          items: responseJson.results.map(dirtyProduct => this.getCleanBaseProduct(dirtyProduct)), categories: responseJson.results.map(product => product.category_id)
+        }
+      });
+    let response: Products = {
+      author: {
+        lastname: "De Lorenzo",
+        name: "Facundo"
+      },
+      ...queryResult
+    };
+    return response;
   }
   async getProduct(id: string): Promise<Product> {
-    let product = fetch(`https://api.mercadolibre.com/items/${id}`).then((response) => { return response.json(); });
-    let description = fetch(`https://api.mercadolibre.com/items/${id}/description`).then((response) => { return response.json() });
+    let product = fetch(`https://api.mercadolibre.com/items/${id}`)
+      .then((response) => response.json())
+      .then((responseJson) => this.getCleanProduct(responseJson));
+    let description = fetch(`https://api.mercadolibre.com/items/${id}/description`)
+      .then((response) => response.json())
+      .then((responseJson) => responseJson.plain_text);
 
-    let result = { ... await product, ... await description };
+    let result: Product = { ... await product, description: await description };
 
     return result;
+  }
+  getCleanBaseProduct(dirtyProduct: any): BaseProduct {
+    try {
+      let product = new BaseProduct();
+      Object.keys(product).forEach(
+        (key) => {
+          if (dirtyProduct[key]) {
+            (product as Product)[key] = dirtyProduct[key]
+          }
+          else {
+            console.log("Key not found: ", key);
+            throw new Error(`Key ${key} not found on dirtyProduct `);
+          };
+        }
+      );
+      if (dirtyProduct?.shipping?.free_shipping !== undefined)
+        product.free_shipping = dirtyProduct.shipping.free_shipping;
+      else
+        throw new Error(`Key shipping.free_shipping not found on dirtyProduct `);
+
+      return product;
+    }
+    catch {
+      return null
+    }
+  }
+  getCleanProduct(dirtyProduct: any): Product {
+    try {
+      let product = new Product();
+      console.log("product: ", product);
+      console.log("keys: ", Object.keys(product));
+      Object.keys(product).forEach(
+        (key) => {
+          if (dirtyProduct[key]) {
+            (product as Product)[key] = dirtyProduct[key]
+          }
+          else {
+            console.log("Key not found: ", key);
+            throw new Error(`Key ${key} not found on dirtyProduct `);
+          };
+        }
+      );
+      if (dirtyProduct?.shipping?.free_shipping !== undefined)
+        product.free_shipping = dirtyProduct.shipping.free_shipping;
+      else
+        throw new Error(`Key shipping.free_shipping not found on dirtyProduct `);
+
+      if (dirtyProduct?.pictures[0].url)
+        product.picture = dirtyProduct?.pictures[0].url;
+      else
+        throw new Error(`Key pictures[0].url not found on dirtyProduct `);
+
+      return product;
+    }
+    catch {
+      return null
+    }
   }
 }
