@@ -15,8 +15,10 @@ const Products = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchParams, _] = useSearchParams();
 
+  const searchParam = searchParams?.get("search") ?? ""
   const { data: products } = useQuery<ProductsResponse>({
-    queryFn: () => getProducts(searchParams?.get("search") ?? ""),
+    queryFn: () => getProducts(searchParam),
+    queryKey: ["products", {searchParam}]
   });
   //Todo: fix category fetch on API
   const popularCategory = getMostPopular(products?.categories ?? []);
@@ -30,7 +32,7 @@ const Products = () => {
         <Paper>
           <ProductsContainer>
             {products?.items?.map((product) => (
-              <ProductListItem product={product} />
+              <ProductListItem key={product.id} product={product} />
             ))}
           </ProductsContainer>
         </Paper>

@@ -17,6 +17,7 @@ const Product = () => {
   const { data: product } = useQuery<ProductResponse>({
     enabled: !!id,
     queryFn: () => getProduct(id!),
+    queryKey: ["product", {id}]
   });
   const breadcrumbChilds = [
     {
@@ -59,7 +60,7 @@ const Product = () => {
                 thousandSeparator="."
                 decimalSeparator=","
               />
-              <Sup>{String(product?.price.decimals).padStart(2, "0")}</Sup>
+              <Sup>{String(product?.price?.decimals).padStart(2, "0")}</Sup>
             </Typography>
             <Button variant="contained">Comprar</Button>
           </RightColumn>

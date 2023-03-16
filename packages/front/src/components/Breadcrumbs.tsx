@@ -15,8 +15,8 @@ const Breadcrumbs = ({ childs }: IBreadcrumbs) => {
   return (
     <StyledBreadcrumbs aria-label="breadcrumb">
       Link
-      {childs.map((child) => (
-        <Link to={child.to} style={{ textDecoration: "none" }}>
+      {childs.map((child, i) => (
+        <Link key={`breadcrumb-${i}`} to={child.to} style={{ textDecoration: "none" }}>
           {child.label}
         </Link>
       ))}
