@@ -8,6 +8,12 @@ The Front was built using a combination of Create-React-App for an out of the bo
 It uses [react-router](https://reactrouter.com/en/main) for simple and efficient routing.
 I decided to use [Material-ui](https://mui.com/) which delivers out of the box elegant themable UI elements and allows for performant styled-components with emotion + inline dynamic styles with an attached prop (sx).
 
+This app relies on external packages, managed with npm, so make sure to have all those packages installed.
+Running this single command at the root folder will get it done.
+```
+npm install
+```
+
 ### `npm run dev:front-api`
 
 Concurrently runs API & front proyects.
@@ -32,4 +38,8 @@ Executes API tests.
 
 ### `npm run build:front`
 
-Production-ready build
+Production-ready front build
+
+### `npm run build:api`
+
+Production-ready API build
