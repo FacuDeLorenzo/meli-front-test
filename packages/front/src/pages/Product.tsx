@@ -109,7 +109,7 @@ const WhitePaper = styled(Paper)({
   display: "flex",
   flexDirection: "row",
   padding: "1rem",
-  marginBOttom:"2rem"
+  marginBottom:"1rem"
 });
 
 const Sup = styled("sup")({

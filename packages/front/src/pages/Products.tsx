@@ -65,5 +65,6 @@ const Paper = styled(MuiPaper)({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
+    marginBottom: "1rem",
 });
 export default Products;
