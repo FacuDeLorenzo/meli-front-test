@@ -12,7 +12,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 const App = () => {
   const router2 = createBrowserRouter(createRoutesFromElements(routes));
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
 
   return (
     <>
