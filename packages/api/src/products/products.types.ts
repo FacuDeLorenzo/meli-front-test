@@ -21,9 +21,13 @@ export interface Product extends BaseProduct {
   category: Category;
 }
 
-export interface Products {
+export interface ProductResponse {
+  item: Product
+}
+
+export interface ProductsResponse {
   categories: Category[];
-  items: Product[]
+  items: BaseProduct[]
 }
 
 export interface ProductPrice {

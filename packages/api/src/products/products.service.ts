@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Category, Description, Product } from './products.types';
+import { BaseProduct, Category, Description, Product, ProductResponse, ProductsResponse } from './products.types';
 import { MapApiProduct, MapApiBaseProduct, MapApiCategory, MapApiDescription } from './products.mappers';
-import getMostFrequent from '../utils/getMostFrequent';
-import jsonFetch from '../utils/jsonFetch';
+import getMostFrequent from 'utils/getMostFrequent';
+import jsonFetch from 'utils/jsonFetch';
 
 @Injectable()
 export class ProductsService {
-  async getProducts(query: string): Promise<{ items: Product[], categories: Category[] }> {
+  async getProducts(query: string): Promise<ProductsResponse> {
     const products = await jsonFetch(`https://api.mercadolibre.com/sites/MLA/search?q=${query}&limit=4`)
       .then(async (dirtyProducts) => {
         if (dirtyProducts.results.length == 0)
@@ -16,9 +16,8 @@ export class ProductsService {
           }
         if (dirtyProducts.results.length > 0) {
           const popularCategories = getMostFrequent(dirtyProducts.results.map(product => product.category_id));
-          const category =  this.getCategory(popularCategories[0]);
-          const products = dirtyProducts.results.map((dirtyProduct: any) => MapApiBaseProduct(dirtyProduct))
-          //Categories list source was not specified 
+          const category = this.getCategory(popularCategories[0]);
+          const products: BaseProduct[] = dirtyProducts.results.map((dirtyProduct: any) => MapApiBaseProduct(dirtyProduct))
           return {
             items: products,
             categories: (await category).path_from_root
@@ -32,11 +31,12 @@ export class ProductsService {
   async getProduct(id: string): Promise<Product> {
     const product = this.getApiProduct(id);
     const description = this.getApiDescription(id);
+    const category = this.getCategory((await product).category.id)
 
     const result: Product = {
       ... await product,
       description: (await description).plain_text,
-      category: await this.getCategory((await product).category.id)
+      category: (await category)
     };
 
     return result;
