@@ -13,9 +13,7 @@ const ProductListItem = ({ product }: IProductListItem) => {
   return (
     <Link to={`/items/${product.id}`} style={{ textDecoration: "none" }}>
       <Card>
-        <PicBox>
-          <img src={product.thumbnail} alt="product" />
-        </PicBox>
+      <Thumbnail src={product.thumbnail} alt="product" />
         <Description>
           <Typography variant="h6" sx={{ marginBottom: "0.5rem" }}>
             $
@@ -25,6 +23,9 @@ const ProductListItem = ({ product }: IProductListItem) => {
               thousandSeparator="."
               decimalSeparator=","
             />
+            {product?.price?.decimals !== 0 && (
+              <Sup>{String(product?.price?.decimals).padStart(2, "0")}</Sup>
+            )}
           </Typography>
           <Typography>{product.title}</Typography>
         </Description>
@@ -33,10 +34,13 @@ const ProductListItem = ({ product }: IProductListItem) => {
   );
 };
 
+export default ProductListItem;
+
 const Card = styled(MuiCard)({
+  boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2)",
   display: "flex",
   flexDirection: "row",
-  padding: "1rem",
+  padding: "0.5rem",
   gap: "1rem",
   marginBottom: "1px",
 });
@@ -45,8 +49,11 @@ const Description = styled("div")({
   flexDirection: "column",
   justifyContent: "flex-start",
 });
-const PicBox = styled("div")({
+const Thumbnail = styled("img")({
   maxWidth: 90,
   maxHeight: 90,
 });
-export default ProductListItem;
+
+const Sup = styled("sup")({
+  fontSize: "10px",
+});
