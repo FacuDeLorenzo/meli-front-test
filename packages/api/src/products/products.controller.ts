@@ -1,20 +1,16 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { ProductDTO, ProductsDTO, ProductsInput } from './products.types';
+import { Product, Products, ProductsInput } from './products.types';
 
 @Controller('api/items')
 export class ProductsController {
   constructor(private readonly itemsService: ProductsService) { }
 
   @Get()
-  async products(@Query() { q: query }: ProductsInput): Promise<ProductsDTO> {
+  async products(@Query() { q: query }: ProductsInput): Promise<Products> {
     const products = await this.itemsService.getProducts(query);
 
-    const response: ProductsDTO = {
-      author: {
-        lastname: "De Lorenzo",
-        name: "Facundo"
-      },
+    const response: Products = {
       categories: products.categories,
       items: products.items
     };
@@ -22,20 +18,13 @@ export class ProductsController {
     return response;
   }
   @Get(':id')
-  async product(@Param('id') id: string): Promise<ProductDTO> {
+  async product(@Param('id') id: string): Promise<Product> {
     if (!id) {
       return null;
     }
 
     const product = await this.itemsService.getProduct(id);
 
-    const response: ProductDTO = {
-      author: {
-        lastname: "De Lorenzo",
-        name: "Facundo"
-      },
-      item: product
-    };
-    return response;
+    return product;
   }
 }

@@ -21,13 +21,7 @@ export interface Product extends BaseProduct {
   category: Category;
 }
 
-export interface ProductDTO {
-  author: Author;
-  item: Product;
-}
-
-export interface ProductsDTO {
-  author: Author;
+export interface Products {
   categories: Category[];
   items: Product[]
 }
@@ -57,7 +51,6 @@ export enum ECurrency {
   ARS = "$",
   USD ="U$S"
 }
-
 
 export enum ECondition {
   used = "used",
