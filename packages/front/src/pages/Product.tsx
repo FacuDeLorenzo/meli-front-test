@@ -7,24 +7,24 @@ import Searcher from "components/styled/Searcher";
 import { NumericFormat } from "react-number-format";
 import { useParams } from "react-router-dom";
 import jsonFetch from "utils/jsonFetch";
-import { Product as ProductResponse } from "types";
+import { ProductResponse, ProductDTO } from "types";
 import Body from "components/styled/Body";
 import ContentSection from "components/styled/ContentSection";
-import Breadcrumbs from "components/Breadcrumbs";
+import Breadcrumbs, { breadcrumbFromCategories } from "components/Breadcrumbs";
+import WithSkeleton from "components/styled/WithSkeleton";
 
 const Product = () => {
   const { id } = useParams();
-  const { data: product } = useQuery<ProductResponse>({
+  const { data: product } = useQuery<ProductResponse, any, ProductDTO>({
     enabled: !!id,
+    queryKey: ["product", { id }],
     queryFn: () => getProduct(id!),
-    queryKey: ["product", {id}]
+    select: (data) => data.item,
   });
-  const breadcrumbChilds = [
-    {
-      to: "#",
-      label: "Product",
-    },
-  ];
+  const breadcrumbChilds = breadcrumbFromCategories(
+    product?.category?.path_from_root
+  );
+
   return (
     <Body>
       <Searcher />
@@ -33,22 +33,23 @@ const Product = () => {
         <WhitePaper>
           <LeftColumn>
             <PicBox>
-              <img
-                src={product?.picture}
-                alt="product"
-                style={{
-                  maxWidth: 400,
-                }}
-              />
+              <WithSkeleton loading={!product} height={400}>
+                <img src={product?.picture} alt="product" />
+              </WithSkeleton>
             </PicBox>
-            <Description>
-              <Typography variant="h4" sx={{ marginBottom: "2rem" }}>
+            <DescriptionBox>
+              <Typography variant="h5" sx={{ marginBottom: "2rem" }}>
                 Descripcion del producto
               </Typography>
-              <Typography variant="h6">{product?.description}</Typography>
-            </Description>
+              <WithSkeleton variant="text" height={100} loading={!product}>
+                <DescriptionText variant="body2" color="grey">
+                  {product?.description}
+                </DescriptionText>
+              </WithSkeleton>
+            </DescriptionBox>
           </LeftColumn>
           <RightColumn>
+          <WithSkeleton variant="text" height={180} loading={!product}>
             <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
               {product?.title}
             </Typography>
@@ -62,7 +63,8 @@ const Product = () => {
               />
               <Sup>{String(product?.price?.decimals).padStart(2, "0")}</Sup>
             </Typography>
-            <Button variant="contained">Comprar</Button>
+            </WithSkeleton>
+            <Button variant="contained" disabled={!product}>Comprar</Button>
           </RightColumn>
         </WhitePaper>
       </ContentSection>
@@ -70,20 +72,27 @@ const Product = () => {
   );
 };
 
+export default Product;
+
 const getProduct = (id: string) => {
   return jsonFetch({
     endpoint: `http://localhost:3001/api/items/${id}`,
   });
 };
 
-const Description = styled("div")({
+const DescriptionBox = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: 4,
 });
+
+const DescriptionText = styled(Typography)({
+  whiteSpace: "pre-line",
+});
 const PicBox = styled("div")({
   justifyContent: "center",
   display: "flex",
+  padding: "1rem",
 });
 const LeftColumn = styled("div")({
   flex: 2,
@@ -100,9 +109,9 @@ const WhitePaper = styled(Paper)({
   display: "flex",
   flexDirection: "row",
   padding: "1rem",
+  marginBOttom:"2rem"
 });
 
 const Sup = styled("sup")({
   fontSize: "20px",
 });
-export default Product;
