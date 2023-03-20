@@ -22,16 +22,22 @@ const Searcher = () => {
   }, [searchParams]);
 
   const onSearch = () => {
-    navigate({
-      pathname: "items",
-      search: createSearchParams({
-        search: `${search}`,
-      }).toString(),
-    });
+    if (search && search.trim())
+      navigate({
+        pathname: "/items",
+        search: createSearchParams({
+          search: `${search.trim()}`,
+        }).toString(),
+      });
   };
 
   return (
-    <SearchBar onSubmit={onSearch}>
+    <SearchBar
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSearch();
+      }}
+    >
       <Box sx={{ display: "flex", gap: 3, flex: 1, justifyContent: "center" }}>
         <img src={MeliIcon} alt="meliIcon" height={"32px"} />
         <SearchBox>
