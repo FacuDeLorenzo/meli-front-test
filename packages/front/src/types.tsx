@@ -2,17 +2,26 @@ export interface BaseProduct {
   id: string;
   title: string;
   price: ProductPrice;
-  condition: string;
+  condition: ECondition;
   free_shipping: Boolean;
 }
 
-export interface Product extends BaseProduct {
+export interface ProductDTO extends BaseProduct {
   picture: string;
   description: string;
+  category: Category;
+}
+
+export interface ProductResponse {
+  author: {
+    name: string;
+    lastname: string;
+  };
+  item: ProductDTO;
 }
 
 export interface ProductPrice {
-  currency: string;
+  currency: ECurrency;
   amount: number;
   decimals: number;
 }
@@ -24,7 +33,7 @@ export interface ListProduct extends BaseProduct {
 export interface Category {
   id: string;
   name: string;
-  path_from_root?: Category[]
+  path_from_root?: Category[];
 }
 
 export interface Products {
@@ -34,4 +43,14 @@ export interface Products {
   };
   categories: Category[];
   items: ListProduct[];
+}
+
+export enum ECurrency {
+  ARS = "$",
+  USD = "U$S",
+}
+
+export enum ECondition {
+  used = "used",
+  new = "new",
 }
