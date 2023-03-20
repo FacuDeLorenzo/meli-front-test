@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Category, Description, Product } from './products.types';
 import { MapApiProduct, MapApiBaseProduct, MapApiCategory, MapApiDescription } from './products.mappers';
-import getMostFrequent from 'src/utils/getMostFrequent';
-import jsonFetch from 'src/utils/jsonFetch';
+import getMostFrequent from '../../src/utils/getMostFrequent';
+import jsonFetch from '../../src/utils/jsonFetch';
 
 @Injectable()
 export class ProductsService {

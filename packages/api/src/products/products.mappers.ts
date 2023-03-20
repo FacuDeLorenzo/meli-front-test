@@ -1,3 +1,5 @@
+import getDecimalPart from '../../src/utils/getDecimalPart';
+import getWholePart from '../../src/utils/getWholePart';
 import { BaseProduct, Category, Description, Product } from './products.types';
 const objectMapper = require('object-mapper');
 
@@ -8,19 +10,18 @@ const MapApiProduct = (apiProduct: any): Product => {
         price: [
             {
                 key: "price.amount",
-                transform: (value: Number) => getWholePart(value)
+                transform: (value: number) => getWholePart(value)
             },
             {
                 key: "price.decimals",
-                transform: (value: Number) => getDecimalPart(value)
+                transform: (value: number) => getDecimalPart(value)
             }
         ],
         currency_id: "price.currency",
         category_id: "category.id",
-        description: "description",
         id: "id",
         thumbnail: "thumbnail",
-        "dirtyProduct.shipping.free_shipping": "free_shipping",
+        "shipping.free_shipping": "free_shipping",
         "pictures[0].url": "picture",
     }
     return objectMapper(apiProduct, apiProductMap);
@@ -33,11 +34,11 @@ const MapApiBaseProduct = (apiProduct: any): BaseProduct => {
         price: [
             {
                 key: "price.amount",
-                transform: (value: Number) => getWholePart(value)
+                transform: (value: number) => getWholePart(value)
             },
             {
                 key: "price.decimals",
-                transform: (value: Number) => getDecimalPart(value)
+                transform: (value: number) => getDecimalPart(value)
             }
         ],
         currency_id: "price.currency",
@@ -45,7 +46,7 @@ const MapApiBaseProduct = (apiProduct: any): BaseProduct => {
         free_shipping: "free_shipping",
         id: "id",
         thumbnail: "thumbnail",
-        "dirtyProduct.shipping.free_shipping": "free_shipping"
+        "shipping.free_shipping": "free_shipping",
     }
     return objectMapper(apiProduct, apiProductMap);
 }
@@ -64,20 +65,6 @@ const MapApiDescription = (apiDescription: any): Description => {
         plain_text: "plain_text"
     }
     return objectMapper(apiDescription, apiDescriptionMap);
-}
-
-const getDecimalPart = (number: Number): Number => {
-    if (Number.isInteger(number))
-        return 0;
-
-    const decimalStr = number.toString().split('.')[1];
-    return Number(decimalStr);
-}
-const getWholePart = (number: Number): Number => {
-    if (Number.isInteger(number))
-        return number;
-    const wholeStr = number.toString().split('.')[0];
-    return Number(wholeStr);
 }
 
 export {

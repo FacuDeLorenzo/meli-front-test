@@ -13,6 +13,6 @@
     "build:front": "npm --workspace=@meli-front-test/front run build",
     "dev:api": "npm --workspace=@meli-front-test/api run start:dev",
     "build:api": "npm --workspace=@meli-front-test/api run build",
-    "test:api": "npm --workspace=@meli-front-test/api run test"
+    "test:api": "npm --workspace=@meli-front-test/api run test:e2e"
   }
 }
