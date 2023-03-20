@@ -1,5 +1,5 @@
-import getDecimalPart from '../../src/utils/getDecimalPart';
-import getWholePart from '../../src/utils/getWholePart';
+import getDecimalPart from '../utils/getDecimalPart';
+import getWholePart from '../utils/getWholePart';
 import { BaseProduct, Category, Description, Product } from './products.types';
 const objectMapper = require('object-mapper');
 
@@ -10,11 +10,11 @@ const MapApiProduct = (apiProduct: any): Product => {
         price: [
             {
                 key: "price.amount",
-                transform: (value: number) => getWholePart(value)
+                transform: (value?: number) => getWholePart(value),
             },
             {
                 key: "price.decimals",
-                transform: (value: number) => getDecimalPart(value)
+                transform: (value?: number) => getDecimalPart(value)
             }
         ],
         currency_id: "price.currency",
@@ -34,11 +34,11 @@ const MapApiBaseProduct = (apiProduct: any): BaseProduct => {
         price: [
             {
                 key: "price.amount",
-                transform: (value: number) => getWholePart(value)
+                transform: (value?: number) => getWholePart(value),
             },
             {
                 key: "price.decimals",
-                transform: (value: number) => getDecimalPart(value)
+                transform: (value?: number) => getDecimalPart(value)
             }
         ],
         currency_id: "price.currency",

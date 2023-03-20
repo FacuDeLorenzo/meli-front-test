@@ -1,4 +1,5 @@
- const getDecimalPart = (number: number): number => {
+ const getDecimalPart = (number?: number): number => {
+    if (!number) return;
     if (Number.isInteger(number))
         return 0;
 

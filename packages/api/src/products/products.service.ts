@@ -16,12 +16,12 @@ export class ProductsService {
           }
         if (dirtyProducts.results.length > 0) {
           const popularCategories = getMostFrequent(dirtyProducts.results.map(product => product.category_id));
-          const category = await this.getCategory(popularCategories[0]);
-          const products = dirtyProducts.results.map(dirtyProduct => MapApiBaseProduct(dirtyProduct))
+          const category =  this.getCategory(popularCategories[0]);
+          const products = dirtyProducts.results.map((dirtyProduct: any) => MapApiBaseProduct(dirtyProduct))
           //Categories list source was not specified 
           return {
             items: products,
-            categories: category.path_from_root
+            categories: (await category).path_from_root
           }
         }
       });
